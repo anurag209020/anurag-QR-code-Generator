@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anurag - URL to QR Code Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #6e7cbb, #b5b2e0);
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            animation: fadeIn 2s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #ffffff;
+            text-shadow: 3px 3px 5px rgba(0, 123, 255, 0.7);
+            margin-bottom: 30px;
+            animation: slideIn 1s ease-out;
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        #urlInput {
+            width: 60%;
+            padding: 12px;
+            font-size: 1.2em;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            margin-top: 20px;
+            transition: border-color 0.3s;
+        }
+
+        #urlInput:focus {
+            border-color: #28a745;
+            outline: none;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1.2em;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 123, 255, 0.5);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+        }
+
+        button:active {
+            transform: translateY(2px);
+        }
+
+        #qrCode {
+            margin-top: 30px;
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #downloadBtn {
+            padding: 12px 25px;
+            font-size: 1.2em;
+            margin-top: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 4px 6px rgba(40, 167, 69, 0.5);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        #downloadBtn:hover {
+            background-color: #218838;
+            transform: translateY(-3px);
+        }
+
+        #downloadBtn:active {
+            transform: translateY(2px);
+        }
+    </style>
+</head>
+<body>
+    <h1>Anurag - URL to QR Code Generator</h1>
+    <input type="text" id="urlInput" placeholder="Enter URL here">
+    <button onclick="generateQRCode()">Generate QR Code</button>
+    
+    <div id="qrCode"></div>
+    <button id="downloadBtn" onclick="downloadQRCode()">Download QR Code</button>
+
+    <script>
+        function generateQRCode() {
+            var url = document.getElementById('urlInput').value;
+            if (url) {
+                var qrCodeContainer = document.getElementById('qrCode');
+                qrCodeContainer.innerHTML = ""; // Clear previous QR code
+                QRCode.toDataURL(url, function (err, url) {
+                    if (err) throw err;
+                    var img = document.createElement('img');
+                    img.src = url;
+                    img.style.border = "10px solid #007bff";
+                    img.style.borderRadius = "12px";
+                    qrCodeContainer.appendChild(img);
+                    document.getElementById('downloadBtn').style.display = 'block';
+                    img.id = 'qrImage'; // Assign an ID to the image for download
+                });
+            } else {
+                alert("Please enter a valid URL");
+            }
+        }
+
+        function downloadQRCode() {
+            var img = document.getElementById('qrImage');
+            var link = document.createElement('a');
+            link.href = img.src;
+            link.download = 'QRCode.png';
+            link.click();
+        }
+    </script>
+</body>
+</html>
